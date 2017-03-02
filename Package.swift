@@ -113,62 +113,10 @@ let package = Package(
         // MARK: Additional Test Dependencies
 
         Target(
-            /** Test support library */
-            name: "TestSupport",
-            dependencies: ["Basic", "POSIX", "PackageGraph", "PackageLoading", "SourceControl", "Utility"]),
-        Target(
             /** Test support executable */
             name: "TestSupportExecutable",
             dependencies: ["Basic", "POSIX", "Utility"]),
         
-        Target(
-            name: "BasicTests",
-            dependencies: ["TestSupport", "TestSupportExecutable"]),
-        Target(
-            name: "BasicPerformanceTests",
-            dependencies: ["Basic"]),
-        Target(
-            name: "BuildTests",
-            dependencies: ["Build", "TestSupport"]),
-        Target(
-            name: "CommandsTests",
-            dependencies: ["Commands", "Workspace", "TestSupport"]),
-        Target(
-            name: "WorkspaceTests",
-            dependencies: ["Workspace", "TestSupport"]),
-        Target(
-            name: "FunctionalTests",
-            dependencies: ["Basic", "Utility", "PackageModel", "TestSupport"]),
-        Target(
-            name: "FunctionalPerformanceTests",
-            dependencies: ["swift-build", "swift-package", "TestSupport"]),
-        Target(
-            name: "GetTests",
-            dependencies: ["Get", "TestSupport"]),
-        Target(
-            name: "PackageLoadingTests",
-            dependencies: ["PackageLoading", "TestSupport"]),
-        Target(
-            name: "PackageLoadingPerformanceTests",
-            dependencies: ["PackageLoading", "TestSupport"]),
-        Target(
-            name: "PackageGraphTests",
-            dependencies: ["PackageGraph", "TestSupport"]),
-        Target(
-            name: "PackageGraphPerformanceTests",
-            dependencies: ["PackageGraph", "TestSupport"]),
-        Target(
-            name: "POSIXTests",
-            dependencies: ["POSIX", "TestSupport"]),
-        Target(
-            name: "SourceControlTests",
-            dependencies: ["SourceControl", "TestSupport"]),
-        Target(
-            name: "UtilityTests",
-            dependencies: ["Utility", "TestSupport"]),
-        Target(
-            name: "XcodeprojTests",
-            dependencies: ["Xcodeproj", "TestSupport"]),
     ],
     exclude: [
         "Tests/PackageLoadingTests/Inputs",
