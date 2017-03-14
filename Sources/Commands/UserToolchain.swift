@@ -21,24 +21,24 @@ import Utility
     private let whichClangArgs = ["which", "clang"]
 #endif
 
-struct UserToolchain: Toolchain {
+public struct UserToolchain: Toolchain {
     /// Path of the `swiftc` compiler.
-    let swiftCompiler: AbsolutePath
+    public let swiftCompiler: AbsolutePath
     
     /// Path of the `clang` compiler.
-    let clangCompiler: AbsolutePath
+    public let clangCompiler: AbsolutePath
     
     /// Path of the default SDK (a.k.a. "sysroot"), if any.
-    let defaultSDK: AbsolutePath?
+    public let defaultSDK: AbsolutePath?
 
 #if os(macOS)
     /// Path to the sdk platform framework path.
     let sdkPlatformFrameworksPath: AbsolutePath
 
-    var clangPlatformArgs: [String] {
+    public var clangPlatformArgs: [String] {
         return ["-arch", "x86_64", "-mmacosx-version-min=10.10", "-isysroot", defaultSDK!.asString, "-F", sdkPlatformFrameworksPath.asString]
     }
-    var swiftPlatformArgs: [String] {
+    public var swiftPlatformArgs: [String] {
         return ["-target", "x86_64-apple-macosx10.10", "-sdk", defaultSDK!.asString, "-F", sdkPlatformFrameworksPath.asString]
     }
 #else
@@ -98,7 +98,7 @@ struct UserToolchain: Toolchain {
         }
     }
 
-    init() throws {
+    public init() throws {
         // Get the search paths from PATH.
         let envSearchPaths = UserToolchain.getEnvSearchPaths(pathString: getenv("PATH"), currentWorkingDirectory: currentWorkingDirectory)
 
