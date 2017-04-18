@@ -136,3 +136,64 @@ private struct Targets {
         test.cmds += commands
     }
 }
+
+/**
+ - Returns: path to generated YAML for consumption by the llbuild based swift-build-tool
+ */
+public func example(
+    _ prefix: AbsolutePath,
+    _ conf: Configuration,
+    _ graph: PackageGraph,
+    flags: BuildFlags,
+    toolchain: Toolchain,
+    toolsVersion: ToolsVersion = ToolsVersion.currentToolsVersion
+    ) -> [(Module, [Command])] {
+    guard graph.modules.count > 0 else {
+        return []
+    }
+
+    if graph.modules.count == 1 {
+        return []
+    }
+
+    let prefix = prefix.appending(component: conf.dirname)
+    let swiftcArgs = flags.cCompilerFlags.flatMap { ["-Xcc", $0] } + flags.swiftCompilerFlags + verbosity.ccArgs
+
+    var commands = [(Module, [Command])]()
+
+    for module in graph.modules {
+        switch module {
+        case let module as SwiftModule:
+            if module.isTest { continue }
+
+            // Ensure that the module sources are compatible with current version of tools.
+            // Note that we don't actually make use of these flags during compilation because
+            // of the compiler bug https://bugs.swift.org/browse/SR-3791.
+            if let swiftLanguageVersions = module.swiftLanguageVersions {
+                guard swiftLanguageVersions.contains(toolsVersion.major) else {
+                    return []
+                }
+            }
+
+            let compile = try! Command.compile(swiftModule: module, configuration: conf, prefix: prefix, otherArgs: toolchain.swiftPlatformArgs + swiftcArgs, compilerExec: toolchain.swiftCompiler)
+            commands.append((module, [compile]))
+
+        case let module as ClangModule:
+            // FIXME: Ignore C language test modules on linux for now.
+            #if os(Linux)
+                if module.isTest { continue }
+            #endif
+            // FIXME: Find a way to eliminate `externalModules` from here.
+            let compile = try! Command.compile(clangModule: module, externalModules: graph.externalModules, configuration: conf, prefix: prefix, otherArgs: toolchain.clangPlatformArgs + flags.cCompilerFlags, compilerExec: toolchain.clangCompiler)
+            commands.append((module, compile))
+
+        case is CModule:
+            continue
+
+        default:
+            fatalError("unhandled module type: \(module)")
+        }
+    }
+
+    return commands
+}

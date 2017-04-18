@@ -9,7 +9,7 @@
 */
 
 /// A command represents an atomic unit of build system work.
-struct Command {
+public struct Command {
     /// A unique name for the command.  This need not match any of the outputs
     /// of the tool, but it does define the stable identifier that is used to
     /// match up incremental build records.

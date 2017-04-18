@@ -19,6 +19,9 @@ protocol ToolProtocol {
     
     /// The list of outputs to declare.
     var outputs: [String] { get }
+
+    /// Array of zero or more strings for the compiler arguments.
+    var otherArguments: [String] { get }
     
     /// Write a description of the tool to the given output `stream`.
     ///
@@ -31,6 +34,10 @@ struct ShellTool: ToolProtocol {
     let inputs: [String]
     let outputs: [String]
     let args: [String]
+
+    var otherArguments: [String] {
+        return args
+    }
 
     func append(to stream: OutputByteStream) {
         stream <<< "    tool: shell\n"
@@ -85,6 +92,7 @@ struct SwiftcTool: ToolProtocol {
     var sources: [AbsolutePath]             { return module.sources.paths }
     var isLibrary: Bool                     { return module.type == .library }
     var enableWholeModuleOptimization: Bool { return conf == .release }
+    var otherArguments: [String]            { return otherArgs }
 
     func append(to stream: OutputByteStream) {
         stream <<< "    tool: swift-compiler\n"
@@ -123,6 +131,10 @@ struct ClangTool: ToolProtocol {
     let args: [String]
     let deps: String?
 
+    var otherArguments: [String] {
+        return args
+    }
+
     func append(to stream: OutputByteStream) {
         stream <<< "    tool: clang\n"
         stream <<< "    description: " <<< Format.asJSON(desc) <<< "\n"
@@ -138,6 +150,7 @@ struct ClangTool: ToolProtocol {
 struct ArchiveTool: ToolProtocol {
     let inputs: [String]
     let outputs: [String]
+    let otherArguments: [String] = []
 
     func append(to stream: OutputByteStream) {
         stream <<< "    tool: archive\n"
