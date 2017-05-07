@@ -13,7 +13,7 @@ import PackageModel
 import Utility
 
 /// Describes a tool which can be understood by llbuild's BuildSystem library.
-protocol ToolProtocol {
+public protocol ToolProtocol {
     /// The list of inputs to declare.
     var inputs: [String] { get }
     
