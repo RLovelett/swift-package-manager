@@ -27,6 +27,7 @@ let package = Package(
                 "libc",
                 "POSIX",
                 "Basic",
+                "Commands",
                 "Utility",
                 "SourceControl",
                 "PackageDescription",
