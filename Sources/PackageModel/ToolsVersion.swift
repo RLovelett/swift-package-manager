@@ -63,9 +63,9 @@ public struct ToolsVersion: CustomStringConvertible, Comparable {
         // The regex succeeded, compute individual components.
         assert(match.numberOfRanges == 6)
         let string = NSString(string: string)
-        let major = Int(string.substring(with: match.range(at: 1)))!
-        let minor = Int(string.substring(with: match.range(at: 2)))!
-        let patchRange = match.range(at: 3)
+        let major = Int(string.substring(with: match.rangeAt(1)))!
+        let minor = Int(string.substring(with: match.rangeAt(2)))!
+        let patchRange = match.rangeAt(3)
         let patch = patchRange.location != NSNotFound ? Int(string.substring(with: patchRange))! : 0
         // We ignore storing pre-release and build identifiers for now.
         _version = Version(major, minor, patch)
