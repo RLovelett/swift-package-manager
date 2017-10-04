@@ -26,7 +26,7 @@ public struct RegEx {
         
         return regex.matches(in: string, options: [], range: NSMakeRange(0, nsString.length)).map{ match -> [String] in
             return (1 ..< match.numberOfRanges).map { idx -> String in
-                let range = match.range(at: idx)
+                let range = match.rangeAt(idx)
                 return range.location == NSNotFound ? "" : nsString.substring(with: range)
             }
         }

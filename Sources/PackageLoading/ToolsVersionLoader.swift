@@ -86,7 +86,7 @@ public class ToolsVersionLoader: ToolsVersionLoaderProtocol {
               match.numberOfRanges >= 2 else {
             return (nil, bytes.contents)
         }
-        let versionSpecifier = NSString(string: firstLine).substring(with: match.range(at: 1))
+        let versionSpecifier = NSString(string: firstLine).substring(with: match.rangeAt(1))
         // FIXME: We can probably optimize here and return array slice.
         return (versionSpecifier, splitted.count == 1 ? [] : Array(splitted[1]))
     }
