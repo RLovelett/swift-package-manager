@@ -17,7 +17,7 @@ let package = Package(
     products: [
         .library(
             name: "SwiftPM",
-            type: .dynamic,
+            type: .static,
             targets: [
                 "clibc",
                 "libc",
